@@ -17,13 +17,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.AABB;
 
 public class GypsumRoseBlockEntity extends BlockEntity {
    private static final int AMPLIFICATION_MODIFIER = 3;
    public static final int MAX_RADIUS = 2;
    private int levels;
-   //private BlockState blockBeneath;
+   private BlockState blockBeneath;
 
    public GypsumRoseBlockEntity(BlockPos pPos, BlockState pBlockState) {
       super(EntityRegistry.GYPSUM_ROSE.get(), pPos, pBlockState);
@@ -37,7 +38,7 @@ public class GypsumRoseBlockEntity extends BlockEntity {
          
          // if activation conditions are met:
          if (pBlockEntity.levels > 0) {
-            applyEffects(pLevel, pPos, pBlockEntity.levels);
+            vetrify(pLevel, pPos, pBlockEntity.levels);
             //playSound(pLevel, pPos, SoundEvents.BEACON_AMBIENT);
          }
       }
@@ -47,27 +48,27 @@ public class GypsumRoseBlockEntity extends BlockEntity {
    //   
    //}
 
-   private static int updateBase(Level level, BlockPos pos, GypsumRoseBlockEntity blockEntity) {
+   private static int updateBase(Level pLevel, BlockPos pPos, GypsumRoseBlockEntity pBlockEntity) {
 
-		BlockState block = level.getBlockState(new BlockPos(pos.getX(), pos.getY() - 1, pos.getZ()));
+		BlockState block = pLevel.getBlockState(new BlockPos(pPos.getX(), pPos.getY() - 1, pPos.getZ()));
 		
 		if (!block.is(BlockTags.SAND))
 			return 0;
 
-		//blockEntity.blockBeneath = block;
+		pBlockEntity.blockBeneath = block;
 		int radius = 1;
 
 		for (int j = 1; j <= MAX_RADIUS; j++) {
-			int k = pos.getY() - j;
-			if (k < level.getMinBuildHeight()) {
+			int k = pPos.getY() - j;
+			if (k < pLevel.getMinBuildHeight()) {
 				break;
 			}
 
 			boolean flag = true;
 
-			for (int l = pos.getX() - j; l <= pos.getX() + j && flag; ++l) {
-				for (int i = pos.getZ() - j; i <= pos.getZ() + j; ++i) {
-					if (!level.getBlockState(new BlockPos(l, pos.getY() - 1, i)).is(BlockTags.SAND)) {
+			for (int l = pPos.getX() - j; l <= pPos.getX() + j && flag; ++l) {
+				for (int i = pPos.getZ() - j; i <= pPos.getZ() + j; ++i) {
+					if (!pLevel.getBlockState(new BlockPos(l, pPos.getY() - 1, i)).is(BlockTags.SAND)) {
 						flag = false;
 						break;
 					}
@@ -90,25 +91,25 @@ public class GypsumRoseBlockEntity extends BlockEntity {
       super.setRemoved();
    }
 
-   private static void applyEffects(Level pLevel, BlockPos pPos, int pLevels) {
+   private static void vetrify(Level pLevel, BlockPos pPos, int pLevels) {
       if (!pLevel.isClientSide) {
-         double effectRange = (double)(pLevels * AMPLIFICATION_MODIFIER);
-         int effectAmplifier = 0;
-         int effectDuration = (pLevels * 2) * 20;
+         double range = (double)(pLevels * AMPLIFICATION_MODIFIER);
+         int amplifier = 0;
+         int duration = (pLevels * 2) * 20;
          
-         AABB aabb = (new AABB(pPos)).inflate(effectRange).expandTowards(0.0D, 0.0D, 0.0D);
+         AABB aabb = (new AABB(pPos)).inflate(range).expandTowards(0.0D, 0.0D, 0.0D);
          
          List<LivingEntity> list = pLevel.getEntitiesOfClass(LivingEntity.class, aabb, (mob) -> {
              return mob instanceof Enemy && mob.isInvertedHealAndHarm();
          });
          
          for(LivingEntity entity : list) {
-        	 entity.addEffect(new MobEffectInstance(MobEffects.WITHER, effectDuration, effectAmplifier, true, true));
+        	 entity.hurt(entity.damageSources().dryOut(), 1.0F);
          }
       }
    }
 
-   public static void playSound(Level pLevel, BlockPos pPos, SoundEvent pSound) {
+public static void playSound(Level pLevel, BlockPos pPos, SoundEvent pSound) {
       pLevel.playSound((Player)null, pPos, pSound, SoundSource.BLOCKS, 1.0F, 1.0F);
    }
 

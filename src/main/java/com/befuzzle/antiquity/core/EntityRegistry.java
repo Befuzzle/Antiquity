@@ -1,7 +1,6 @@
 package com.befuzzle.antiquity.core;
 
 import com.befuzzle.antiquity.Antiquity;
-import com.befuzzle.antiquity.block.entity.AncientBellBlockEntity;
 import com.befuzzle.antiquity.block.entity.GypsumRoseBlockEntity;
 
 import net.minecraft.Util;
@@ -16,12 +15,6 @@ import net.minecraftforge.registries.RegistryObject;
 public class EntityRegistry {
 	public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister
 			.create(ForgeRegistries.BLOCK_ENTITY_TYPES, Antiquity.MOD_ID);
-
-	public static final RegistryObject<BlockEntityType<AncientBellBlockEntity>> ANCIENT_BELL = BLOCK_ENTITY_TYPES
-			.register("ancient_bell",
-					() -> BlockEntityType.Builder.of(AncientBellBlockEntity::new, BlockRegistry.ANCIENT_BELL.get())
-							.build(Util.fetchChoiceType(References.BLOCK_ENTITY,
-									new ResourceLocation(Antiquity.MOD_ID, "ancient_bell").toString())));
 
 	public static final RegistryObject<BlockEntityType<GypsumRoseBlockEntity>> GYPSUM_ROSE = BLOCK_ENTITY_TYPES
 			.register("gypsum_rose",

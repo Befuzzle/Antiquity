@@ -1,7 +1,6 @@
 package com.befuzzle.antiquity.core;
 
 import com.befuzzle.antiquity.Antiquity;
-import com.befuzzle.antiquity.block.AncientBellBlock;
 import com.befuzzle.antiquity.block.GypsumRoseBlock;
 
 import net.minecraft.world.level.block.Block;
@@ -17,11 +16,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class BlockRegistry {
 	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS,
 			Antiquity.MOD_ID);
-
-	public static final RegistryObject<Block> ANCIENT_BELL = BLOCKS.register("ancient_bell",
-			() -> new AncientBellBlock(BlockBehaviour.Properties.copy(Blocks.ANVIL)
-					.requiresCorrectToolForDrops().strength(5.0F, 1200.0F).sound(SoundType.ANVIL).noOcclusion().mapColor(MapColor.METAL)));
-
+	
 	public static final RegistryObject<Block> GYPSUM_ROSE = BLOCKS
 			.register("gypsum_rose",
 					() -> new GypsumRoseBlock(BlockBehaviour.Properties.copy(Blocks.AMETHYST_CLUSTER)
