@@ -38,6 +38,7 @@ public class GypsumRoseBlock extends BaseEntityBlock {
 	}
 
 	@Nullable
+	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state,
 			BlockEntityType<T> entityType) {
 		return level.isClientSide ? null : 
@@ -49,12 +50,13 @@ public class GypsumRoseBlock extends BaseEntityBlock {
 		return SHAPE;
 	}
 
+	@Override
 	public void animateTick(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom) {
-	   double d0 = (double)pPos.getX() + 0.5D;
-	   double d1 = (double)pPos.getY() + 0.6D;
-	   double d2 = (double)pPos.getZ() + 0.5D;
+	   double dx = pPos.getX() + 0.5D;
+	   double dy = pPos.getY() + 0.6D;
+	   double dz = pPos.getZ() + 0.5D;
 	   if (pRandom.nextInt(5) == 0) {
-		  pLevel.addParticle(ParticleTypes.END_ROD, d0, d1, d2, pRandom.nextGaussian() * 0.005D, pRandom.nextGaussian() * -0.005D, pRandom.nextGaussian() * 0.005D);
+		  pLevel.addParticle(ParticleTypes.END_ROD, dx, dy, dz, pRandom.nextGaussian() * 0.005D, pRandom.nextGaussian() * -0.005D, pRandom.nextGaussian() * 0.005D);
 	   }
 	}
 }
