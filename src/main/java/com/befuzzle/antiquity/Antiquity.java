@@ -3,6 +3,7 @@ package com.befuzzle.antiquity;
 import com.befuzzle.antiquity.core.BlockRegistry;
 import com.befuzzle.antiquity.core.EntityRegistry;
 import com.befuzzle.antiquity.core.ItemRegistry;
+import com.befuzzle.antiquity.core.ParticleRegistry;
 import com.mojang.logging.LogUtils;
 
 import net.minecraft.world.item.CreativeModeTabs;
@@ -32,6 +33,7 @@ public class Antiquity {
         ItemRegistry.ITEMS.register(eventBus);
 		BlockRegistry.BLOCKS.register(eventBus);
 		EntityRegistry.BLOCK_ENTITY_TYPES.register(eventBus);
+		ParticleRegistry.PARTICLE_TYPES.register(eventBus);
 		
         // Register the commonSetup method for modloading
         eventBus.addListener(this::commonSetup);

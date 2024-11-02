@@ -2,11 +2,14 @@ package com.befuzzle.antiquity.block.entity;
 
 import com.befuzzle.antiquity.core.EntityRegistry;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
@@ -37,9 +40,17 @@ public class GypsumRoseBlockEntity extends BlockEntity {
       }
    }
    
-   //public static void clientTick(Level pLevel, BlockPos pPos, BlockState pState, GypsumRoseBlockEntity pBlockEntity) {
-   //   
-   //}
+   public static void clientTick(Level pLevel, BlockPos pPos, BlockState pState, GypsumRoseBlockEntity pBlockEntity) {
+	  
+	   if(pBlockEntity.levels == 0) return; 
+	   
+	  RandomSource randomsource = pLevel.getRandom();
+	  double dx = pPos.getX() + randomsource.nextDouble();
+	  double dy = pPos.getY() + randomsource.nextDouble();
+	  double dz = pPos.getZ() + randomsource.nextDouble();
+	  pLevel.addParticle((ParticleOptions) ParticleTypes.BLOCK, dx, dy, dz, 0.0D, -1.0D * pBlockEntity.levels, 0.0D);
+	  
+   }
 
    private static int updateBase(Level pLevel, BlockPos pPos, GypsumRoseBlockEntity pBlockEntity) {
 
